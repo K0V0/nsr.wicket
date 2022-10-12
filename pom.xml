@@ -34,6 +34,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<!-- wicket-spring bridge -->
 		<dependency>
 			<groupId>com.giffing.wicket.spring.boot.starter</groupId>

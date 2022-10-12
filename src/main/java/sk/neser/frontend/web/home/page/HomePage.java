@@ -11,6 +11,7 @@ import sk.neser.frontend.model.HomePageModel;
 public class HomePage extends BasePage {
 
     public HomePage() {
+        super();
         add(new Label("homepage-title", new HomePageModel()));
     }
 

@@ -1,4 +1,4 @@
 package sk.neser.backend.home;
 
-public class HomePageEntiry {
+public class HomePageEntity {
 }
