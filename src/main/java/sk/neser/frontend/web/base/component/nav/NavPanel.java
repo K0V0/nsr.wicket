@@ -5,9 +5,9 @@ import org.apache.wicket.markup.html.panel.Panel;
 import sk.neser.frontend.web.home.page.HomePage;
 import sk.neser.frontend.web.info.page.InfoPage;
 
-public class Nav extends Panel {
+public class NavPanel extends Panel {
 
-    public Nav() {
+    public NavPanel() {
         super("nav");
 
         add(new Link<Void>("web.base.nav.home") {
