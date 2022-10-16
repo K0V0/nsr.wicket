@@ -17,3 +17,7 @@ html body main,
 html body footer {
 
 }
+
+html body main {
+    padding: 1em 0;
+}

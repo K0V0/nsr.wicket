@@ -16,7 +16,7 @@ public abstract class BasePage extends WebPage {
 
     private static final List<String> CSS_FILES = new ArrayList<>();
     static {
-        CSS_FILES.addAll(Arrays.asList("Reset.css", "Classes.css"));
+        CSS_FILES.addAll(Arrays.asList("Reset.css", "Elements.css", "Classes.css"));
     }
 
     private final ScriptUtil scriptUtil;
