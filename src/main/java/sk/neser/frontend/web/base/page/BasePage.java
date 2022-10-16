@@ -24,7 +24,8 @@ public abstract class BasePage extends WebPage {
     public BasePage() {
         /** head - css scripts */
         scriptUtil = new ScriptUtil(this, BasePage.class);
-        addScripts(scriptUtil);
+        addCssScripts(scriptUtil);
+        scriptUtil.init();
         /** head - other info */
         add(headPanel());
         /** body > header */
@@ -44,8 +45,8 @@ public abstract class BasePage extends WebPage {
         return new HeadPanel(this);
     }
 
-    protected void addScripts(ScriptUtil scriptUtil) {
-        scriptUtil.addCssFilesBefore(CSS_FILES);
+    protected void addCssScripts(ScriptUtil scriptUtil) {
+        scriptUtil.addCssFilesBefore(CSS_FILES, BasePage.class);
     }
 
 }

@@ -7,8 +7,9 @@ import org.apache.wicket.request.resource.CssResourceReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -18,36 +19,42 @@ public class ScriptUtilUtils {
 
     private ScriptUtilUtils() {}
 
-    protected static final void addComponentCssFile(List<String> files, String fileToAdd) {
-        if (files == null) files = new ArrayList<>();
-        files.add(fileToAdd);
+    protected static final void addComponentCssFile(Map<Class, List<String>> files, String fileToAdd, Class klass) {
+        if (fileToAdd == null || klass == null) return;
+        files.computeIfAbsent(klass, k -> new ArrayList<>());
+        files.get(klass).add(fileToAdd);
     }
 
-    protected static final void addComponentCssFiles(List<String> files, List<String> filesToAdd) {
-        if (files == null) files = new ArrayList<>();
-        files.addAll(filesToAdd);
+    protected static final void addComponentCssFiles(Map<Class, List<String>> files, List<String> filesToAdd, Class klass) {
+        if (filesToAdd == null || klass == null) return;
+        files.computeIfAbsent(klass, k -> new ArrayList<>());
+        files.get(klass).addAll(filesToAdd);
     }
 
     protected static final CssResourceReference createCssResourceReference(Class klass, String cssFileName) {
-        return new CssResourceReference(klass, String.format(CSS_FILENAME_FORMAT, cssFileName));
+        return new CssResourceReference(klass, cssFileName);
     }
 
     protected static final CssResourceReference createCssResourceReference(Class klass) {
         return createCssResourceReference(klass, klass.getSimpleName());
     }
 
-    protected static final void addFilesToResources(List<CssReferenceHeaderItem> resources, Class klass, List<String> fileNames) {
+    protected static final void addFilesToResources(List<CssReferenceHeaderItem> resources, Class klass, Map<Class, List<String>> fileNames) {
         Optional.ofNullable(fileNames)
+                .map(fn -> fn.get(klass))
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
+                .distinct()
                 .map(ccf -> createCssResourceReference(klass, ccf))
-                .filter(Objects::nonNull)
+                .filter(ccf -> ccf.getResource() != null && ccf.getResource().getResourceStream() != null)
                 .map(CssHeaderItem::forReference)
                 .forEach(resources::add);
     }
 
     protected static final void addFilesToResources(List<CssReferenceHeaderItem> resources, Class klass) {
-        addFilesToResources(resources, klass, Collections.singletonList(klass.getSimpleName()));
+        Map<Class, List<String>> files = new HashMap<>();
+        files.put(klass, Collections.singletonList(String.format(CSS_FILENAME_FORMAT, klass.getSimpleName())));
+        addFilesToResources(resources, klass, files);
     }
 
     protected static final List<Class> getAncestorClasses(Class componentClass) {

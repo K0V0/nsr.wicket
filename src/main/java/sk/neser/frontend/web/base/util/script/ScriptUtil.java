@@ -5,8 +5,9 @@ import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class ScriptUtil implements Serializable {
 
@@ -15,56 +16,50 @@ public class ScriptUtil implements Serializable {
     private final Class baseClass;
     private final List<Class> classesChain;
 
-    //private final List<String> componentCssFileNames;
-    private List<String> componentCssFileNamesBefore;
-    private List<String> componentCssFileNamesAfter;
+    private final Map<Class, List<String>> componentCssFileNamesBefore;
+    private final Map<Class, List<String>> componentCssFileNamesAfter;
 
     public ScriptUtil(Component component, Class baseClass) {
         this.componentContext = component;
         this.baseClass = baseClass;
+        this.componentCssFileNamesBefore = new HashMap<>();
+        this.componentCssFileNamesAfter = new HashMap<>();
+        this.componentCssResources = new ArrayList<>();
         this.classesChain = ScriptUtilUtils.getAncestorClassesUntilBase(componentContext.getClass(), baseClass);
-        //this.componentCssFileNames = getComponentCssFileNames();
-        this.componentCssResources = createComponentCssResources();
+    }
+
+    public void init() {
+        createComponentCssResources();
     }
 
     /** add CSS file(s) before css of actual component */
-    public void addCssFileBefore(String componentCssFile) {
-        ScriptUtilUtils.addComponentCssFile(componentCssFileNamesBefore, componentCssFile);
+    public void addCssFileBefore(String componentCssFile, Class klass) {
+        ScriptUtilUtils.addComponentCssFile(componentCssFileNamesBefore, componentCssFile, klass);
     }
-    public void addCssFileAfter(String componentCssFile) {
-        ScriptUtilUtils.addComponentCssFile(componentCssFileNamesAfter, componentCssFile);
+    public void addCssFileAfter(String componentCssFile, Class klass) {
+        ScriptUtilUtils.addComponentCssFile(componentCssFileNamesAfter, componentCssFile, klass);
     }
 
     /** add file(s) after css of actual component */
-    public void addCssFilesBefore(List<String> componentCssFiles) {
-        ScriptUtilUtils.addComponentCssFiles(componentCssFileNamesBefore, componentCssFiles);
+    public void addCssFilesBefore(List<String> componentCssFiles, Class klass) {
+        ScriptUtilUtils.addComponentCssFiles(componentCssFileNamesBefore, componentCssFiles, klass);
     }
-    public void addCssFilesAfter(List<String> componentCssFiles) {
-        ScriptUtilUtils.addComponentCssFiles(componentCssFileNamesAfter, componentCssFiles);
+    public void addCssFilesAfter(List<String> componentCssFiles, Class klass) {
+        ScriptUtilUtils.addComponentCssFiles(componentCssFileNamesAfter, componentCssFiles, klass);
     }
 
     public List<CssReferenceHeaderItem> getComponentCssResources() {
         return componentCssResources;
     }
 
-//    protected List<String> getComponentCssFileNames() {
-//        return ScriptUtilUtils.getAncestorClassesUntilBase(componentContext.getClass(), baseClass)
-//                .stream().map(Class::getSimpleName).collect(Collectors.toList());
-//    }
-    protected List<CssReferenceHeaderItem> createComponentCssResources() {
-        List<CssReferenceHeaderItem> resources = new ArrayList<>();
+    protected void createComponentCssResources() {
         for (Class klass : classesChain) {
+            /** files before component(s) file */
+            ScriptUtilUtils.addFilesToResources(componentCssResources, klass, componentCssFileNamesBefore);
             /** component(s) CSS file(s) */
-            ScriptUtilUtils.addFilesToResources(resources, klass);
+            ScriptUtilUtils.addFilesToResources(componentCssResources, klass);
+            /** files after component CSS */
+            ScriptUtilUtils.addFilesToResources(componentCssResources, klass, componentCssFileNamesAfter);
         }
-//        if (componentContext != null) {
-//            /** files before component(s) file */
-//            ScriptUtilUtils.addFilesToResources(resources, componentContext, componentCssFileNamesBefore);
-//            /** component(s) CSS file(s) */
-//            ScriptUtilUtils.addFilesToResources(resources, componentContext, componentCssFileNames);
-//            /** files after component CSS */
-//            ScriptUtilUtils.addFilesToResources(resources, componentContext, componentCssFileNamesAfter);
-//        }
-        return resources;
     }
 }

@@ -11,6 +11,7 @@ public abstract class BasePanel extends Panel {
     public BasePanel(String id) {
         super(id);
         this.scriptUtil = new ScriptUtil(this, BasePanel.class);
+        this.scriptUtil.init();
     }
 
     @Override
