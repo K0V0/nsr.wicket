@@ -17,7 +17,7 @@
 	<description>Neser.sk Spring Boot + Wicet demo project</description>
 
 	<properties>
-		<java.version>17</java.version>
+		<java.version>1.8</java.version>
 		<wicket-spring.version>3.1.6</wicket-spring.version>
 		<wicket.version>9.7.0</wicket.version>
 		<wicketstuff.version>9.6.0</wicketstuff.version>
@@ -75,6 +75,12 @@
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>wicketstuff-annotation</artifactId>
 			<version>${wicketstuff.version}</version>
+		</dependency>
+		<!-- Other libs	-->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.9-RC1</version>
 		</dependency>
 
 	</dependencies>

@@ -1,11 +1,11 @@
 package sk.neser.frontend.web.base.component.nav;
 
-import org.apache.wicket.markup.html.panel.Panel;
 import sk.neser.frontend.elements.link.LinkToPage;
+import sk.neser.frontend.web.base.component.BasePanel;
 import sk.neser.frontend.web.home.page.HomePage;
 import sk.neser.frontend.web.info.page.InfoPage;
 
-public class NavPanel extends Panel {
+public class NavPanel extends BasePanel {
 
     public NavPanel() {
         super("nav");

@@ -17,7 +17,7 @@ public class LinkToPage {
 
     public static Link<Void> create(Component source, Class target) {
         String id = String.format(ID_FORMAT_TEMPLATE, source.getClass().getSimpleName(), target.getSimpleName());
-        Link<Void> link = new Link<>(id) {
+        Link<Void> link = new Link<Void>(id) {
             @Override
             public void onClick() {
                 setResponsePage(target);

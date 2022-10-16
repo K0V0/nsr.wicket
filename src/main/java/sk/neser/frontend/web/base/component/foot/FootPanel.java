@@ -1,8 +1,8 @@
 package sk.neser.frontend.web.base.component.foot;
 
-import org.apache.wicket.markup.html.panel.Panel;
+import sk.neser.frontend.web.base.component.BasePanel;
 
-public class FootPanel extends Panel {
+public class FootPanel extends BasePanel {
 
     public FootPanel() {
         super("foot");
